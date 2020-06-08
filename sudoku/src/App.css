@@ -1,0 +1,113 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.game-board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.row {
+  display: flex;
+}
+
+.square {
+  width: 40px;
+  height: 40px;
+  border: 1px solid gray;
+}
+
+.square:focus {
+  background: yellow;
+}
+
+/* input {
+  cursor: default;
+  color: transparent;
+  text-shadow: 0 0 0 #212121;
+  text-align: center;
+  font-size: 30px;
+} */
+
+.col {
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  color: blue;
+  cursor: default;
+}
+
+.focused {
+  background: yellow;
+}
+
+.fixed {
+  color: black;
+}
+
+.border-bottom {
+  border-bottom: 1px solid black;
+}
+
+.border-right {
+  border-right: 1px solid black;
+}
+
+.border-top {
+  border-top: 1px solid black;
+}
+
+.border-left {
+  border-left: 1px solid black;
+}
+
+.container {
+  border: 1px solid black;
+  z-index: 1;
+}
+
+.game-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
