@@ -1,4 +1,7 @@
 import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import "./App.css";
+
 // class Square extends React.Component {
 //   render() {
 //     return (
@@ -14,9 +17,11 @@ import React from 'react';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
+    <Col>
+      <div className="square" onClick={props.onClick}>
+        {props.value}
+      </div>
+    </Col>
   );
 }
 
@@ -32,24 +37,24 @@ class Board extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
+      <Container>
+        {/* <div className="status">{status}</div> */}
+        <Row className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
+        </Row>
+        <Row className="board-row">
           {this.renderSquare(3)}
           {this.renderSquare(4)}
           {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
+        </Row>
+        <Row className="board-row">
           {this.renderSquare(6)}
           {this.renderSquare(7)}
           {this.renderSquare(8)}
-        </div>
-      </div>
+        </Row>
+      </Container>
     );
   }
 }
