@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link, Redirect } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import PlayView from './views/playView';
 import InputView from './views/inputView';
 
