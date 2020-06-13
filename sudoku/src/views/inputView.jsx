@@ -142,7 +142,7 @@ class Game extends React.Component {
 
     return (
       <div className="game">
-        <div className="game-board">
+        <div className="game-board-input">
           <div className="game-background" onClick={() => this.setState({inside: false})}></div>
           <Board 
             squares={current.squares} 

@@ -37,7 +37,7 @@
     }
   }
   
-  .game-board {
+  .game-board-input {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,7 +72,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: white;
+    /* background: white; */
     color: blue;
     cursor: default;
   }

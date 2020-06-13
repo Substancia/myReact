@@ -5,9 +5,14 @@ import "./playView.css";
 
 class Square extends React.Component {
   render() {
+    const pencilmarks = (!this.props.value) ? Array(9).fill(null).map((corner, index) => {
+      let classList = "col pencilmarks";
+      if (this.props.pencilmarks[index]) classList = classList.concat(" visible");
+      return <div className={classList} key={index} onClick={() => this.props.onClick()} >{index+1}</div>
+    }) : null;
     return (
       <Col className={this.props.class} onClick={() => this.props.onClick()} >
-        {/* <p className={this.props.class} onClick={() => this.props.onClick()} ref={(input) => {this.textInput = input;}} >{this.props.value}</p> */}
+        {pencilmarks}
         {this.props.value}
       </Col>
     );
@@ -37,6 +42,7 @@ class Board extends React.Component {
         onClick={() => this.selectSquare(i, j)} 
         class={classlist} 
         focus={(this.state.selectedSquare[0] === i && this.state.selectedSquare[1] === j) ? true : false} 
+        pencilmarks={this.props.pencilmarks[i][j]} 
       />
     );
   }
@@ -99,10 +105,12 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(Array(9).fill(null)),
+        pencilmarks: Array(9).fill(Array(9).fill(Array(9).fill(null))),
       }],
       fixed: [],  // stores fixed value positions
       stepNumber: 0,
       inside: false,
+      inputType: 'normal',
     };
   }
   
@@ -115,6 +123,7 @@ class Game extends React.Component {
       fixed: this.props.fixed.map(index => [index[0], index[1]]),
       history: [{
         squares: squares,
+        pencilmarks: Array(9).fill(Array(9).fill(Array(9).fill(null))),
       }],
     });
   }
@@ -123,6 +132,7 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = this.state.history[history.length - 1];
     const squares = current.squares.map((row) => {return row.slice()});
+    const pencilmarks = current.pencilmarks.map(row => row.map(col => {return col.slice()}));
     console.log(e);
     // if (e.target.value.length === 0) {
     //   squares[i][j] = "";
@@ -134,12 +144,20 @@ class Game extends React.Component {
     this.state.fixed.map(index => {
       if (index[0] === i && index[1] === j) found = true;
     });
-    if (!found) squares[i][j] = e;
+    if (!found) {
+      if (this.state.inputType === 'normal') {
+        squares[i][j] = e;
+        pencilmarks.map((corner, index) => pencilmarks[i][j][index] = null);
+      } else if (this.state.inputType === 'corner') {
+        pencilmarks[i][j][e-1] = e;
+      }
+    }
 //    squares[i][j] = (isNaN(e.target.value)) ? squares[i][j] : (squares[i][j] === e.target.value%10) ? Math.floor(e.target.value/10) : e.target.value%10;
 //    console.log(isNaN(e.target.value));
     this.setState({
       history: history.concat([{
         squares: squares,
+        pencilmarks: pencilmarks,
       }]),
       stepNumber: history.length,
     });
@@ -149,15 +167,28 @@ class Game extends React.Component {
     this.setState({inside: true});
   }
 
+  buttonControls(type) {
+    this.setState({inputType: type});
+  }
+  
+  handleUndo() {
+    if (this.state.stepNumber !== 0) this.setState({stepNumber: this.state.stepNumber-1});
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
+    const pencilmarks = current.pencilmarks;
 //    console.log(history.length);
 //    console.log(current.squares);
 
     return (
       <div className="game">
-        <div className="game-board">
+        <KeyboardEventHandler
+          handleKeys={['ctrl+z']}
+          onKeyEvent={key => this.handleUndo()}
+        />
+        <div className="game-board-play">
           <div className="game-background" onClick={() => this.setState({inside: false})}></div>
           <Board 
             squares={current.squares} 
@@ -165,7 +196,12 @@ class Game extends React.Component {
             inside={this.state.inside}
             handleOutside={() => this.handleOutside()}
             fixed={this.state.fixed}
+            pencilmarks={pencilmarks}
           />
+          <div className="controls">
+            <button className={(this.state.inputType === 'normal') ? "active" : null} onClick={() => this.buttonControls('normal')}>Normal</button>
+            <button className={(this.state.inputType === 'corner') ? "active" : null} onClick={() => this.buttonControls('corner')}>Corner</button>
+          </div>
         </div>
       </div>
     );

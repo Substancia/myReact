@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-import PlayView from './views/playView';
 import InputView from './views/inputView';
+import PlayView from './views/playView';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,15 +28,15 @@ class App extends React.Component {
     return (
       <div className="App">
         <Switch>
-          <Route path="/play">
-            <PlayView 
-              fixed={this.state.fixed}
-            />
-          </Route>
           <Route path="/input">
             <InputView 
               redirect={this.state.redirect}
               onSubmit={(fixed) => this.updateFixed(fixed)}
+            />
+          </Route>
+          <Route path="/play">
+            <PlayView 
+              fixed={this.state.fixed}
             />
           </Route>
           <Route path="/">
