@@ -121,6 +121,18 @@
     visibility: hidden;
   }
 
+  .centermarks {
+    position: relative;
+    font-size: 10px;
+  }
+
+  .centermarks-holder {
+    position: absolute;
+    height: 10px;
+    font-size: 10px;
+    display: flex;
+  }
+
   .visible {
     visibility: visible;
   }

@@ -5,13 +5,21 @@ import "./playView.css";
 
 class Square extends React.Component {
   render() {
-    const pencilmarks = (!this.props.value) ? Array(9).fill(null).map((corner, index) => {
+    const centermarks = (this.props.value === null && this.props.centermarks.length) ? this.props.centermarks.map((value, index) => {
+      if (this.props.centermarks[index]) {
+        return <div className="col centermarks" key={index} onClick={() => this.props.onClick()} >{value}</div>
+      }
+    }) : null;
+    const pencilmarks = (this.props.value === null && centermarks === null) ? Array(9).fill(null).map((corner, index) => {
       let classList = "col pencilmarks";
       if (this.props.pencilmarks[index]) classList = classList.concat(" visible");
       return <div className={classList} key={index} onClick={() => this.props.onClick()} >{index+1}</div>
     }) : null;
     return (
       <Col className={this.props.class} onClick={() => this.props.onClick()} >
+        <div className="centermarks-holder">
+          {centermarks}
+        </div>
         {pencilmarks}
         {this.props.value}
       </Col>
@@ -43,6 +51,7 @@ class Board extends React.Component {
         class={classlist} 
         focus={(this.state.selectedSquare[0] === i && this.state.selectedSquare[1] === j) ? true : false} 
         pencilmarks={this.props.pencilmarks[i][j]} 
+        centermarks={this.props.centermarks[i][j]} 
       />
     );
   }
@@ -106,6 +115,7 @@ class Game extends React.Component {
       history: [{
         squares: Array(9).fill(Array(9).fill(null)),
         pencilmarks: Array(9).fill(Array(9).fill(Array(9).fill(null))),
+        centermarks: Array(9).fill(Array(9).fill(Array(0))),
       }],
       fixed: [],  // stores fixed value positions
       stepNumber: 0,
@@ -124,6 +134,7 @@ class Game extends React.Component {
       history: [{
         squares: squares,
         pencilmarks: Array(9).fill(Array(9).fill(Array(9).fill(null))),
+        centermarks: Array(9).fill(Array(9).fill(Array(0))),
       }],
     });
   }
@@ -133,6 +144,7 @@ class Game extends React.Component {
     const current = this.state.history[history.length - 1];
     const squares = current.squares.map((row) => {return row.slice()});
     const pencilmarks = current.pencilmarks.map(row => row.map(col => {return col.slice()}));
+    const centermarks = current.centermarks.map(row => row.map(col => {return col.slice()}));
     console.log(e);
     // if (e.target.value.length === 0) {
     //   squares[i][j] = "";
@@ -148,8 +160,16 @@ class Game extends React.Component {
       if (this.state.inputType === 'normal') {
         squares[i][j] = e;
         pencilmarks.map((corner, index) => pencilmarks[i][j][index] = null);
+        centermarks[i][j] = [];
       } else if (this.state.inputType === 'corner') {
-        pencilmarks[i][j][e-1] = e;
+        pencilmarks[i][j][e-1] = (pencilmarks[i][j][e-1] === e) ? null : e;
+      } else if (this.state.inputType === 'center') {
+        if (centermarks[i][j].includes(e)) {
+          centermarks[i][j] = centermarks[i][j].filter((value) => {return value !== e});
+        } else {
+          centermarks[i][j].push(e);
+          centermarks[i][j].sort();
+        }
       }
     }
 //    squares[i][j] = (isNaN(e.target.value)) ? squares[i][j] : (squares[i][j] === e.target.value%10) ? Math.floor(e.target.value/10) : e.target.value%10;
@@ -158,6 +178,7 @@ class Game extends React.Component {
       history: history.concat([{
         squares: squares,
         pencilmarks: pencilmarks,
+        centermarks: centermarks,
       }]),
       stepNumber: history.length,
     });
@@ -174,11 +195,47 @@ class Game extends React.Component {
   handleUndo() {
     if (this.state.stepNumber !== 0) this.setState({stepNumber: this.state.stepNumber-1});
   }
+  
+  handleCheck () {
+    const squares = this.state.history[this.state.stepNumber].squares;
+    let error = false;
+    for (let i = 0; i < 8; ++i) {   // selects row
+      for (let j = 0; j < 8; ++j) {   // selects col
+        for (let k = i + 1; k < 9; ++k) {   // loops through rest of the selected row
+          if (squares[i][j] === squares[k][j]) {
+            error = true;
+            break;
+          }
+        }
+        for (let k = j + 1; k < 9; ++k) {   // loops through rest of the selected col
+          if (squares[i][j] === squares[i][k]) {
+            error = true;
+            break;
+          }
+        }
+        for (let k = 3*Math.floor(i/3); k < 3*(Math.floor(i/3)+1); ++k) {
+          for (let l = 3*Math.floor(j/3); l < 3*(Math.floor(j/3)+1); ++j) {
+            if (squares[i][j] === squares[k][l]) if (i !== k && j !== l) error = true;
+            break;
+          }
+          if (error) break;
+        }
+        if (error) break;
+      }
+      if (error) break;
+    }
+    if (error) {
+      alert("Doesn't look good to me!");
+    } else {
+      alert("Looks good to me!");
+    }
+  }
 
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const pencilmarks = current.pencilmarks;
+    const centermarks = current.centermarks;
 //    console.log(history.length);
 //    console.log(current.squares);
 
@@ -197,10 +254,13 @@ class Game extends React.Component {
             handleOutside={() => this.handleOutside()}
             fixed={this.state.fixed}
             pencilmarks={pencilmarks}
+            centermarks={centermarks}
           />
           <div className="controls">
             <button className={(this.state.inputType === 'normal') ? "active" : null} onClick={() => this.buttonControls('normal')}>Normal</button>
             <button className={(this.state.inputType === 'corner') ? "active" : null} onClick={() => this.buttonControls('corner')}>Corner</button>
+            <button className={(this.state.inputType === 'center') ? "active" : null} onClick={() => this.buttonControls('center')}>Center</button>
+            <button onClick={() => this.handleCheck()}>Check</button>
           </div>
         </div>
       </div>
