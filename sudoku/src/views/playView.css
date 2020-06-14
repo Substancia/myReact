@@ -78,7 +78,7 @@
   }
   
   .focused {
-    background: yellow;
+    background: yellow !important;
   }
   
   .fixed {
@@ -144,4 +144,12 @@
   .controls {
     display: flex;
     flex-direction: column;
+  }
+
+  .error {
+    color: red;
+  }
+
+  .highlighted {
+    background: lightblue;
   }

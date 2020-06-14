@@ -42,6 +42,24 @@ class Board extends React.Component {
     if (j===2 || j===5 || j===8) classlist=classlist.concat(" border-right");
     if (j===0 || j===3 || j===6) classlist=classlist.concat(" border-left");
     this.props.fixed.map(index => {if (index[0] === i && index[1] === j) classlist = classlist.concat(" fixed")});
+    let error = false;
+    let highlighted = false;
+    for (let k = 0; k < 9; ++k) {
+      if (this.props.squares[i][j] === this.props.squares[i][k]) if (j !== k) if (this.props.squares[i][j]) {error = true; break;}
+      if (this.props.squares[i][j] === this.props.squares[k][j]) if (i !== k) if (this.props.squares[i][j]) {error = true; break;}
+      if (this.state.selectedSquare[0] === i || this.state.selectedSquare[1] ===j) highlighted = true;
+    }
+    for (let k = 3*Math.floor(i/3); k < 3*(Math.floor(i/3)+1); ++k) {
+      for (let l = 3*Math.floor(j/3); l < 3*(Math.floor(j/3)+1); ++l) {
+        if (this.props.squares[i][j] === this.props.squares[k][l]) if (i !== k && j !== l) if (this.props.squares[i][j]) {
+          error = true;
+        }
+        if (this.state.selectedSquare[0] === k && this.state.selectedSquare[1] ===l) highlighted = true;
+      }
+      if (error) break;
+    }
+    if (error) classlist = classlist.concat(" error");
+    if (highlighted) classlist = classlist.concat(" highlighted");
     classlist = classlist.concat((this.state.selectedSquare[0] === i && this.state.selectedSquare[1] ===j) ? " focused" : "");
     return (
       <Square 
@@ -125,6 +143,10 @@ class Game extends React.Component {
   }
   
   componentDidMount() {
+    this.handleReset();
+  }
+  
+  handleReset() {
 //    let fixed = [[2, 1, 4], [3, 5, 2]];
     const history = this.state.history.slice();
     const squares = history[0].squares.map(row => {return row.slice()});
@@ -136,6 +158,7 @@ class Game extends React.Component {
         pencilmarks: Array(9).fill(Array(9).fill(Array(9).fill(null))),
         centermarks: Array(9).fill(Array(9).fill(Array(0))),
       }],
+      stepNumber: 0,
     });
   }
 
@@ -214,7 +237,7 @@ class Game extends React.Component {
           }
         }
         for (let k = 3*Math.floor(i/3); k < 3*(Math.floor(i/3)+1); ++k) {
-          for (let l = 3*Math.floor(j/3); l < 3*(Math.floor(j/3)+1); ++j) {
+          for (let l = 3*Math.floor(j/3); l < 3*(Math.floor(j/3)+1); ++l) {
             if (squares[i][j] === squares[k][l]) if (i !== k && j !== l) error = true;
             break;
           }
@@ -261,6 +284,7 @@ class Game extends React.Component {
             <button className={(this.state.inputType === 'corner') ? "active" : null} onClick={() => this.buttonControls('corner')}>Corner</button>
             <button className={(this.state.inputType === 'center') ? "active" : null} onClick={() => this.buttonControls('center')}>Center</button>
             <button onClick={() => this.handleCheck()}>Check</button>
+            <button onClick={() => this.handleReset()}>Reset</button>
           </div>
         </div>
       </div>
