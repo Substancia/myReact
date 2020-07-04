@@ -7,11 +7,11 @@ class Square extends React.Component {
   render() {
     const centermarks = (this.props.value === null && this.props.centermarks.length) ? this.props.centermarks.map((value, index) => {
       if (this.props.centermarks[index]) {
-        return <div className="col centermarks" key={index} onClick={() => this.props.onClick()} >{value}</div>
+        return <div className="inside centermarks" key={index} onClick={() => this.props.onClick()} >{value}</div>
       }
     }) : null;
     const pencilmarks = (this.props.value === null && centermarks === null) ? Array(9).fill(null).map((corner, index) => {
-      let classList = "col pencilmarks";
+      let classList = "inside pencilmarks";
       if (this.props.pencilmarks[index]) classList = classList.concat(" visible");
       return <div className={classList} key={index} onClick={() => this.props.onClick()} >{index+1}</div>
     }) : null;
@@ -28,15 +28,8 @@ class Square extends React.Component {
 }
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedSquare: [null, null],
-    };
-  }
-
   renderSquare(i, j) {
-    let classlist = "square";
+    let classlist = "inside square";
     if (i===2 || i===5 || i===8) classlist=classlist.concat(" border-bottom");
     if (i===0 || i===3 || i===6) classlist=classlist.concat(" border-top");
     if (j===2 || j===5 || j===8) classlist=classlist.concat(" border-right");
@@ -47,37 +40,31 @@ class Board extends React.Component {
     for (let k = 0; k < 9; ++k) {
       if (this.props.squares[i][j] === this.props.squares[i][k]) if (j !== k) if (this.props.squares[i][j]) {error = true; break;}
       if (this.props.squares[i][j] === this.props.squares[k][j]) if (i !== k) if (this.props.squares[i][j]) {error = true; break;}
-      if (this.state.selectedSquare[0] === i || this.state.selectedSquare[1] ===j) highlighted = true;
+      if (this.props.selectedSquare[0] === i || this.props.selectedSquare[1] ===j) highlighted = true;
     }
     for (let k = 3*Math.floor(i/3); k < 3*(Math.floor(i/3)+1); ++k) {
       for (let l = 3*Math.floor(j/3); l < 3*(Math.floor(j/3)+1); ++l) {
         if (this.props.squares[i][j] === this.props.squares[k][l]) if (i !== k && j !== l) if (this.props.squares[i][j]) {
           error = true;
         }
-        if (this.state.selectedSquare[0] === k && this.state.selectedSquare[1] ===l) highlighted = true;
+        if (this.props.selectedSquare[0] === k && this.props.selectedSquare[1] ===l) highlighted = true;
       }
       if (error) break;
     }
     if (error) classlist = classlist.concat(" error");
     if (highlighted) classlist = classlist.concat(" highlighted");
-    classlist = classlist.concat((this.state.selectedSquare[0] === i && this.state.selectedSquare[1] ===j) ? " focused" : "");
+    classlist = classlist.concat((this.props.selectedSquare[0] === i && this.props.selectedSquare[1] ===j) ? " focused" : "");
     return (
       <Square 
         key={9*i+j} 
         value={this.props.squares[i][j]} 
-        onClick={() => this.selectSquare(i, j)} 
+        onClick={() => this.props.selectSquare(i, j)} 
         class={classlist} 
-        focus={(this.state.selectedSquare[0] === i && this.state.selectedSquare[1] === j) ? true : false} 
+        focus={(this.props.selectedSquare[0] === i && this.props.selectedSquare[1] === j) ? true : false} 
         pencilmarks={this.props.pencilmarks[i][j]} 
         centermarks={this.props.centermarks[i][j]} 
       />
     );
-  }
-
-  selectSquare(i, j) {
-    this.setState({selectedSquare: [i, j]});
-    console.log(i, j);
-    this.props.handleOutside();
   }
 
   render() {
@@ -90,7 +77,7 @@ class Board extends React.Component {
     );
 
     if (!this.props.inside) {
-      this.setState({selectedSquare: [null, null]});
+      this.props.selectSquare(null, null);
       this.props.handleOutside();
     }
 
@@ -100,23 +87,23 @@ class Board extends React.Component {
           handleKeys={['all']} 
           handleFocusableElements 
           onKeyEvent={(key) => {
-            if (this.state.selectedSquare[0] !== null && this.state.selectedSquare[1] !== null) {
+            if (this.props.selectedSquare[0] !== null && this.props.selectedSquare[1] !== null) {
               switch(key) {
-                case 'left': this.selectSquare(this.state.selectedSquare[0]%9, ((this.state.selectedSquare[1]-1)+9)%9);
+                case 'left': this.props.selectSquare(this.props.selectedSquare[0]%9, ((this.props.selectedSquare[1]-1)+9)%9);
                 break;
-                case 'up': this.selectSquare(((this.state.selectedSquare[0]-1)+9)%9, this.state.selectedSquare[1]);
+                case 'up': this.props.selectSquare(((this.props.selectedSquare[0]-1)+9)%9, this.props.selectedSquare[1]);
                 break;
-                case 'right': this.selectSquare(this.state.selectedSquare[0], (this.state.selectedSquare[1]+1)%9);
+                case 'right': this.props.selectSquare(this.props.selectedSquare[0], (this.props.selectedSquare[1]+1)%9);
                 break;
-                case 'down': this.selectSquare((this.state.selectedSquare[0]+1)%9, this.state.selectedSquare[1]);
+                case 'down': this.props.selectSquare((this.props.selectedSquare[0]+1)%9, this.props.selectedSquare[1]);
                 break;
-                case 'backspace': this.props.onChange(this.state.selectedSquare[0], this.state.selectedSquare[1], null);
+                case 'backspace': this.props.onChange(this.props.selectedSquare[0], this.props.selectedSquare[1], null);
                 break;
-                case 'del': this.props.onChange(this.state.selectedSquare[0], this.state.selectedSquare[1], null);
+                case 'del': this.props.onChange(this.props.selectedSquare[0], this.props.selectedSquare[1], null);
                 break;
                 default:
               }
-              if (!isNaN(key) && key!==0) this.props.onChange(this.state.selectedSquare[0], this.state.selectedSquare[1], key);
+              if (!isNaN(key) && key!==0) this.props.onChange(this.props.selectedSquare[0], this.props.selectedSquare[1], parseInt(key));
             }
           }} 
         />
@@ -139,6 +126,7 @@ class Game extends React.Component {
       stepNumber: 0,
       inside: false,
       inputType: 'normal',
+      selectedSquare: [null, null],
     };
   }
   
@@ -207,6 +195,12 @@ class Game extends React.Component {
     });
   }
   
+  selectSquare(i, j) {
+    this.setState({selectedSquare: [i, j]});
+    console.log(i, j);
+    this.handleOutside();
+  }
+
   handleOutside() {
     this.setState({inside: true});
   }
@@ -278,13 +272,25 @@ class Game extends React.Component {
             fixed={this.state.fixed}
             pencilmarks={pencilmarks}
             centermarks={centermarks}
+            selectedSquare={this.state.selectedSquare}
+            selectSquare={(i, j) => this.selectSquare(i, j)}
           />
           <div className="controls">
-            <button className={(this.state.inputType === 'normal') ? "active" : null} onClick={() => this.buttonControls('normal')}>Normal</button>
-            <button className={(this.state.inputType === 'corner') ? "active" : null} onClick={() => this.buttonControls('corner')}>Corner</button>
-            <button className={(this.state.inputType === 'center') ? "active" : null} onClick={() => this.buttonControls('center')}>Center</button>
+            <button className={(this.state.inputType === 'normal') ? "inside active" : "inside"} onClick={() => this.buttonControls('normal')}>Normal</button>
+            <button className={(this.state.inputType === 'corner') ? "inside active" : "inside"} onClick={() => this.buttonControls('corner')}>Corner</button>
+            <button className={(this.state.inputType === 'center') ? "inside active" : "inside"} onClick={() => this.buttonControls('center')}>Center</button>
+            <button onClick={() => this.handleUndo()}>Undo</button>
             <button onClick={() => this.handleCheck()}>Check</button>
             <button onClick={() => this.handleReset()}>Reset</button>
+          </div>
+          <div className="numpad">
+            {Array(3).fill(null).map((i, index) => {
+              return <div className="numpad-row">
+                {Array(3).fill(null).map((j,jndex) => {
+                  return <button className="inside" onClick={() => this.handleClick(this.state.selectedSquare[0], this.state.selectedSquare[1], parseInt(3*index+jndex+1))}>{3*index+jndex+1}</button>
+                })}
+              </div>
+            })}
           </div>
         </div>
       </div>
@@ -293,7 +299,7 @@ class Game extends React.Component {
 }
 
 window.onclick = function(event) {
-  if (!event.target.matches('.col')) {
+  if (!event.target.matches('.inside')) {
     var square = document.getElementsByClassName("focused");
     if (square.length) square[0].classList.remove('focused');
   }

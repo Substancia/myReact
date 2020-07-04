@@ -153,3 +153,13 @@
   .highlighted {
     background: lightblue;
   }
+
+  .numpad {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .numpad-row {
+    display: flex;
+    flex-direction: row;
+  }

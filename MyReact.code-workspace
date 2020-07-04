@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "sudoku"
+		},
+		{
+			"path": "tictactoe"
+		},
+		{
+			"path": "text-sharer-between-platforms"
+		},
+		{
+			"path": "nested-tabs"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "lint"
+	}
+}
