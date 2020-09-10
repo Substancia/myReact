@@ -1,0 +1,30 @@
+[
+  {
+    "date": "SUN 20-Jul",
+    "percent": 41
+  },
+  {
+    "date": "MON 21-Jul",
+    "percent": 72
+  },
+  {
+    "date": "TUE 22-Jul",
+    "percent": 51
+  },
+  {
+    "date": "WED 23-Jul",
+    "percent": 72
+  },
+  {
+    "date": "THU 24-Jul",
+    "percent": 82
+  },
+  {
+    "date": "FRI 25-Jul",
+    "percent": 87
+  },
+  {
+    "date": "SAT 26-Jul",
+    "percent": 60
+  }
+]

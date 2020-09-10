@@ -1,0 +1,65 @@
+[
+  {
+    "date": "SUN 20-Jul",
+    "value": {
+      "auto": 7,
+      "manual": 0,
+      "calls": 4,
+      "others": 2
+    }
+  },
+  {
+    "date": "MON 21-Jul",
+    "value": {
+      "auto": 22,
+      "manual": 7,
+      "calls": 5,
+      "others": 4
+    }
+  },
+  {
+    "date": "TUE 22-Jul",
+    "value": {
+      "auto": 11,
+      "manual": 9,
+      "calls": 1,
+      "others": 2
+    }
+  },
+  {
+    "date": "WED 23-Jul",
+    "value": {
+      "auto": 23,
+      "manual": 5,
+      "calls": 2,
+      "others": 5
+    }
+  },
+  {
+    "date": "THU 24-Jul",
+    "value": {
+      "auto": 25,
+      "manual": 8,
+      "calls": 3,
+      "others": 0
+    }
+  },
+  {
+    "date": "FRI 25-Jul",
+    "value": {
+      "auto": 16,
+      "manual": 4,
+      "calls": 2,
+      "others": 0
+    }
+  },
+  {
+    "date": "SAT 26-Jul",
+    "value": {
+      "auto": 6,
+      "manual": 6,
+      "calls": 2,
+      "others": 3
+    }
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "date": "Jul 1",
+    "value": {
+      "auto": 51,
+      "manual": 2,
+      "calls": 18,
+      "others": 5
+    }
+  },
+  {
+    "date": "Jul 2",
+    "value": {
+      "auto": 102,
+      "manual": 0,
+      "calls": 10,
+      "others": 29
+    }
+  },
+  {
+    "date": "Jul 3",
+    "value": {
+      "auto": 128,
+      "manual": 22,
+      "calls": 10,
+      "others": 24
+    }
+  },
+  {
+    "date": "Jul 4",
+    "value": {
+      "auto": 54,
+      "manual": 5,
+      "calls": 13,
+      "others": 7
+    }
+  },
+  {
+    "date": "Jul 5",
+    "value": {
+      "auto": 75,
+      "manual": 1,
+      "calls": 6,
+      "others": 20
+    }
+  },
+  {
+    "date": "Jul 6",
+    "value": {
+      "auto": 141,
+      "manual": 7,
+      "calls": 28,
+      "others": 13
+    }
+  },
+  {
+    "date": "Jul 7",
+    "value": {
+      "auto": 124,
+      "manual": 11,
+      "calls": 13,
+      "others": 5
+    }
+  },
+  {
+    "date": "Jul 8",
+    "value": {
+      "auto": 125,
+      "manual": 42,
+      "calls": 7,
+      "others": 15
+    }
+  },
+  {
+    "date": "Jul 9",
+    "value": {
+      "auto": 69,
+      "manual": 32,
+      "calls": 21,
+      "others": 23
+    }
+  },
+  {
+    "date": "Jul 10",
+    "value": {
+      "auto": 59,
+      "manual": 35,
+      "calls": 7,
+      "others": 26
+    }
+  },
+  {
+    "date": "Jul 11",
+    "value": {
+      "auto": 104,
+      "manual": 26,
+      "calls": 2,
+      "others": 16
+    }
+  },
+  {
+    "date": "Jul 12",
+    "value": {
+      "auto": 103,
+      "manual": 42,
+      "calls": 17,
+      "others": 0
+    }
+  },
+  {
+    "date": "Jul 13",
+    "value": {
+      "auto": 121,
+      "manual": 18,
+      "calls": 7,
+      "others": 6
+    }
+  },
+  {
+    "date": "Jul 14",
+    "value": {
+      "auto": 78,
+      "manual": 43,
+      "calls": 17,
+      "others": 11
+    }
+  },
+  {
+    "date": "Jul 15",
+    "value": {
+      "auto": 71,
+      "manual": 24,
+      "calls": 14,
+      "others": 11
+    }
+  },
+  {
+    "date": "Jul 16",
+    "value": {
+      "auto": 133,
+      "manual": 4,
+      "calls": 15,
+      "others": 23
+    }
+  }
+]

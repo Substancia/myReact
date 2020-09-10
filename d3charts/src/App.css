@@ -1,0 +1,36 @@
+.container {
+  width: 1100px;
+  text-align: center;
+}
+
+.yAxis 
+  path, line {
+    stroke: white;
+  }
+
+.xAxis 
+  path, line {
+    stroke: white;
+  }
+
+.xAxis-grey 
+  path, line {
+    stroke: lightgrey;
+  }
+
+.yAxis-grey 
+  path, line {
+    stroke: lightgrey;
+  }
+
+.tooltip {
+  background-color: lightgrey;
+  position: absolute;
+  opacity: 0;
+  width: 70px;
+  padding: 5px;
+}
+
+g {
+  margin: 5px;
+}
