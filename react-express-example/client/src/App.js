@@ -34,7 +34,7 @@ class List extends Component {
             {list.map((item) => {
               return(
                 <div>
-                  {item}
+                  {item.id} : {item.name}
                 </div>
               );
             })}
